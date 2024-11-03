@@ -1,73 +1,61 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SearchBar from './components/SearchBar';
-import WeatherCard from './components/WeatherCard';
+import CurrentWeather from './components/CurrentWeather';
 import ForecastCard from './components/ForecastCard';
+import LoadingSpinner from './components/LoadingSpinner';
+import ErrorAlert from './components/ErrorAlert';
+import { useWeatherApi } from './hooks/useWeatherApi';
 
-function App() {
-  const [searchText, setSearchText] = useState(""); // State to store the search input
-  const [loading, setLoading] = useState(false); // State to manage loading status
-  const [currentWeatherData, setCurrentWeatherData] = useState(null); // State to store current weather data
-  const [forecastWeatherData, setForecastWeatherData] = useState(null); // State to store forecast data
+const App = () => {
+  const [searchText, setSearchText] = useState('');
+  
+  // Use custom hook to get weather data and functions
+  const { 
+    loading, 
+    error, 
+    weatherData, 
+    debouncedFetch 
+  } = useWeatherApi();
 
-  // Handles search input and triggers both weather data fetches
-  const handleSearch = (query) => {
-    fetchWeatherData(query);
-    fetchForecastWeatherData(query);
-  };
-
-  // Fetches current weather data from the API
-  const fetchWeatherData = async (query) => {
-    setLoading(true); 
-    try {
-      const response = await fetch(`http://api.weatherapi.com/v1/current.json?key=${import.meta.env.VITE_API_KEY}&q=${query}`);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      setCurrentWeatherData(data);
-    } catch (error) {
-      console.error('Error fetching current weather data:', error);
-    } finally {
-      setLoading(false); 
-    }
-  };
-
-  // Fetches weekly forecast data from the API
-  const fetchForecastWeatherData = async (query) => {
-    setLoading(true); 
-    try {
-      const response = await fetch(`http://api.weatherapi.com/v1/forecast.json?key=${import.meta.env.VITE_API_KEY}&q=${query}&days=7`);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      setForecastWeatherData(data);
-    } catch (error) {
-      console.error('Error fetching forecast data:', error);
-    } finally {
-      setLoading(false); 
-    }
-  };
-
+  // Fetch initial weather data for Colombo when component mounts
   useEffect(() => {
-    fetchWeatherData('colombo');
-    fetchForecastWeatherData('colombo');
-  }, []);
+    debouncedFetch('colombo');
+  }, [debouncedFetch]);
+
+  // Handle search input changes
+  const handleSearchChange = (e) => {
+    const query = e.target.value;
+    setSearchText(query);
+    // Only fetch if user has typed at least 3 characters
+    if (query.length >= 3) {
+      debouncedFetch(query);
+    }
+  };
 
   return (
-    <div className="App">
-      <SearchBar searchText={searchText} setSearchText={setSearchText} handleSearch={handleSearch} />
-      
-      {loading && <div className="spinner"></div>}
-      {currentWeatherData && (
-        <WeatherCard weather={currentWeatherData} />
-      )}
-      {forecastWeatherData && (
-        <ForecastCard forecast={forecastWeatherData} />
-      )}
-
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-blue-100 p-4 md:p-8">
+      <div className="max-w-6xl mx-auto space-y-6">
+        {/* Search input */}
+        <SearchBar 
+          searchText={searchText} 
+          onSearchChange={handleSearchChange} 
+        />
+        
+        {/* Error and loading states */}
+        {error && <ErrorAlert message={error} />}
+        {loading && <LoadingSpinner />}
+        
+        {/* Weather data display */}
+        {weatherData.current && (
+          <CurrentWeather weatherData={weatherData.current} />
+        )}
+        
+        {weatherData.forecast && (
+          <ForecastCard forecast={weatherData.forecast} />
+        )}
+      </div>
     </div>
   );
-}
+};
 
 export default App;

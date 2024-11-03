@@ -1,21 +1,19 @@
 import React from "react";
+import { Search } from "lucide-react";
 
-const SearchBar = ({ searchText, setSearchText, handleSearch }) => {
+const SearchBar = ({ searchText, onSearchChange }) => {
   return (
-    <div className="max-w-lg mx-auto mt-6 p-4 bg-gray-50 rounded-lg shadow-md">
-      <input
-        type="text"
-        value={searchText}
-        onChange={(e) => setSearchText(e.target.value)}
-        className="border border-gray-300 rounded-lg p-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="Enter city or zipcode..."
-      />
-      <button
-        onClick={() => handleSearch(searchText)}
-        className="mt-4 bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition duration-300 w-full"
-      >
-        Search
-      </button>
+    <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+        <input
+          type="text"
+          value={searchText}
+          onChange={onSearchChange}
+          className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+          placeholder="Search for a city..."
+        />
+      </div>
     </div>
   );
 };

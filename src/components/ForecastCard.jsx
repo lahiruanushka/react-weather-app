@@ -1,29 +1,34 @@
-import React from "react";
+import React from 'react';
+
+const DayForecast = ({ day, index }) => (
+  <div className="flex flex-col items-center p-4 rounded-lg bg-white shadow-sm">
+    <p className="text-sm font-medium">
+      {index === 0 
+        ? 'Today' 
+        : new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}
+    </p>
+    <img
+      src={day.day.condition.icon}
+      alt={day.day.condition.text}
+      className="w-12 h-12 my-2"
+    />
+    <div className="text-center">
+      <p className="font-semibold">{Math.round(day.day.maxtemp_c)}°</p>
+      <p className="text-gray-500 text-sm">{Math.round(day.day.mintemp_c)}°</p>
+    </div>
+  </div>
+);
 
 const ForecastCard = ({ forecast }) => {
-  const { forecastday } = forecast.forecast;
-
   return (
-    <div className="bg-white shadow-lg rounded-lg p-4 mx-5 my-4 overflow-x-auto">
-      <div className="text-center text-xl font-bold text-gray-800 mb-3">
-        7-Day Forecast
-      </div>
-      <div className="flex space-x-3">
-        {forecastday.map((day, index) => (
-          <div key={index} className="bg-gray-50 border border-gray-200 rounded-lg p-3 text-center shadow-md min-w-[150px] flex-shrink-0">
-            <div className="text-md font-semibold text-gray-700 mb-1">{day.date}</div>
-            <img 
-              src={day.day.condition.icon} 
-              alt={day.day.condition.text} 
-              className="w-12 h-12 mx-auto mb-2"
-            />
-            <div className="text-gray-600">
-              <p className="text-sm">Condition: {day.day.condition.text}</p>
-              <p className="text-sm">Max Temp: {day.day.maxtemp_c}°C</p>
-              <p className="text-sm">Min Temp: {day.day.mintemp_c}°C</p>
-            </div>
-          </div>
-        ))}
+    <div className="bg-white rounded-lg shadow-md">
+      <div className="p-6">
+        <h2 className="text-2xl font-bold mb-6">7-Day Forecast</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+          {forecast.forecast.forecastday.map((day, index) => (
+            <DayForecast key={day.date} day={day} index={index} />
+          ))}
+        </div>
       </div>
     </div>
   );
