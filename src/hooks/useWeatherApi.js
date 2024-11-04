@@ -22,12 +22,12 @@ export const useWeatherApi = () => {
       // Fetch both current weather and forecast data simultaneously
       const [currentRes, forecastRes] = await Promise.all([
         fetch(
-          `http://api.weatherapi.com/v1/current.json?key=${
+          `https://api.weatherapi.com/v1/current.json?key=${
             import.meta.env.VITE_API_KEY
           }&q=${query}`
         ),
         fetch(
-          `http://api.weatherapi.com/v1/forecast.json?key=${
+          `https://api.weatherapi.com/v1/forecast.json?key=${
             import.meta.env.VITE_API_KEY
           }&q=${query}&days=7`
         ),
