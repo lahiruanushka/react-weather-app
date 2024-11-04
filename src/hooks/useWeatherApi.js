@@ -46,7 +46,6 @@ export const useWeatherApi = () => {
 
       // Update state with new weather data
       setWeatherData({ current, forecast });
-      console.log(weatherData);
     } catch (error) {
       setError("Unable to fetch weather data. Please try again.");
       console.error("Error:", error);
