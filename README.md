@@ -1,9 +1,7 @@
 # ☁ Weather Application
-
 A contemporary weather application built with React that delivers current weather updates and 7-day forecasts for any location. This application leverages Tailwind CSS for styling and is powered by WeatherAPI.
 
 ## Features
-
 - 🔍 Real-time search functionality with debouncing
 - 🌡️ Display of current weather conditions
 - 📅 Detailed 7-day weather forecasts
@@ -15,6 +13,8 @@ A contemporary weather application built with React that delivers current weathe
 ## Project Link
 [Weather Application Live Demo](https://lahiruanushka.github.io/react-weather-app/)
 
-## Screenshots
+## API
+This weather application uses the [WeatherAPI.com](https://www.weatherapi.com/) to fetch real-time weather data. The API provides current weather conditions, as well as detailed 7-day forecasts for any location.
 
+## Screenshots
 ![Weather App Screenshot](docs/screenshots/screenshot1.png)
