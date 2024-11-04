@@ -1,4 +1,4 @@
-# Weather Application
+# ☁ Weather Application
 
 A modern React weather application that provides current weather conditions and 7-day forecasts for any location. Built with React, Tailwind CSS, and powered by WeatherAPI.
 
